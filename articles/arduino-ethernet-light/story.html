@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create your first connected light using Arduino Ethernet</title>
+    <link rel="stylesheet" href="/public/style.css">
+    <link rel="stylesheet" href="/public/icons/css/slate.css">
+    <!--<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Italiana&amp;subset=latin">-->
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  </head>
+  <body>
+
+
+    <section id="top">
+
+    <div id="menu">
+      <a id="toggle" href="#">
+        <i class="icon-menu"></i>
+      </a>
+      <ul>
+        <li><a href="#hardware">Hardware</a></li>
+        <li><a href="#software">Software</a></li>
+        <li><a href="#hardware-setup">Hardware setup</a></li>
+        <li><a href="#lelylan-setup">Lelylan setup</a></li>
+        <li><a href="#code">Code</a></li>
+        <li><a href="#mobile-access">Mobile access</a></li>
+        <li><a href="#code-explained">Code explained</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#thanks">Thanks</a></li>
+      </ul>
+    </div>
+
+    <div id="heading">
+      <div id="logo">Create your first connected light<br> using Arduino Ethernet</div>
+      <div id="tagline">
+        Control and monitor a connected light from mobile, tablet and desktop in 15 minutes
+      </div>
+      <div class="center">
+        <img src="header.jpg" class="bordered"></img>
+      <div>
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+      <h1 id="hardware">Hardware</h1>
+
+      <p>
+        To follow this tutorial you need an Arduino Ethernet or an Arduino UNO with
+        an Ethernet shield. Follows the list of components you need to reach the
+        final result.
+      <p>
+
+      <table class="table table-stripped table-hover">
+        <thead>
+          <tr>
+            <th>Components</th>
+            <th>Buy</th>
+            <th>Price</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Arduino Ethernet</td>
+            <td><a href="https://www.sparkfun.com/products/11229" target="_blank">Sparkfun</a></td>
+            <td>$59.95</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Push button</td>
+            <td><a href="https://www.sparkfun.com/products/9590" target="_blank">Component packs</a></td>
+            <td>$0.35</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Led</td>
+            <td><a href="https://www.sparkfun.com/products/9590" target="_blank">Component packs</a></td>
+            <td>$0.35</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>10K Ohm resistor</td>
+            <td><a href="https://www.sparkfun.com/products/10969" target="_blank">Resistor kit</a></td>
+            <td>$0.25</td>
+            <td>1</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    </section>
+
+
+
+    <section>
+    <div class="content">
+      <h1 id="software">Software</h1>
+
+      <p>
+      To program your Arduino you need to install the
+      <a href="http://arduino.cc/en/main/software">Arduino IDE</a>
+      and the following libraries (if you do not know how to install a library checkout this
+      <a href="http://arduino.cc/en/Guide/Libraries">tutorial</a>).
+      </p>
+
+      <table class="table table-stripped">
+        <thead>
+          <tr>
+            <th style="width: 160px">Library</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://github.com/andreareginato/pubsubclient">PubSubClient</a></td>
+            <td>
+              This is a fork of the <a href="https://github.com/knolleary/pubsubclient">original</a>
+              PubSubClient setting the <a href="http://knolleary.net/client-for-mqtt/api/#configoptions">max packet size</a>
+              to 512 bytes (needed for Lelylan to work).
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+      <h1 id="hardware-setup">Hardware Setup</h1>
+
+      <p>
+      This schema represents the led, resistor and pushbutton setup. With this setup
+      each time you press the button, the LED is turned on and off.
+      </p>
+
+      <img src="components.png" class="bordered"></img>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="lelylan-setup">Lelylan Setup</h1>
+
+      <p>
+      Open <a href="http://lelylan.github.io/devices-dashboard-ng/">Lelylan Dashboard</a>
+      and create a new device by following 3 simple steps (if you are new to Lelylan, you can
+      <a href="http://people.lelylan.com/users/sign_up">sign up</a> for free).
+      </p>
+
+      <h3>1) Set a meaningful name (e.g. bedroom light).</h3>
+
+      <img src="create/1.png" class="bordered"></img>
+
+      <h3>2) Choose the device type. For this tutorial choose <em>Basic Light</em>.</h3>
+
+      <p>
+      What is a type? A type defines what a device is by defining its properties,
+      functions and statuses. For this tutorial you do not need to now more about.
+      </p>
+
+      <img src="create/2.png" class="bordered"></img>
+
+      <h3>3) Choose <em>"Connect with MQTT"</em> as connectivity option.</h3>
+
+      <p>
+      In this tutorial we'll use MQTT, a publish subscribe protocol for the Internet of Things.
+      </p>
+
+      <img src="create/3.png" class="bordered"></img>
+
+      <h3>4) Get the Device ID and Device Secret.</h3>
+      <p>
+        Once the device is created, click the settings link (placed under the device name)
+        and get the device ID and device secret. You'll need them in the next section.
+      </p>
+      <img src="create/4-a.png" class="bordered" style="margin-bottom:0"></img>
+      <img src="create/4.png" class="bordered" style="margin-top:0"></img>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="code">Code</h1>
+
+      <p>
+      Once the (virtual) device is defined on Lelylan you need to make it communicate with
+      Arduino. Copy the sketch below and change the following variables:
+      <code>deviceId</code>, <code>deviceSecret</code>,
+      <code>outTopic</code>, <code>inTopic</code> and <code>clientId</code>.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/813149ea661ec3066790.js"></script>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="code">You are done</h1>
+
+      <p>
+      Access the <a href="http://lelylan.github.io/devices-dashboard-ng">Lelylan Dashboard</a>
+      and control your connected light from mobile, tablet and desktop.
+      </p>
+
+      <a href="http://lelylan.github.io/devices-dashboard-ng">
+        <img src="create/5.png" class="bordered"></img>
+      </a>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="code">Code Explained</h1>
+
+      <p>
+      To better understand how the Arduino sketch works, follows a brief description of what
+      every section does.
+      </p>
+
+
+      <h3>Device Settings</h3>
+
+      <p>
+        The <code>deviceId</code> and <code>deviceSecret</code> is used to authenticate
+        the physical object (Arduino) with Lelylan. To get the device credentials open the
+        <a href="http://lelylan.github.io/devices-dashboard-ng">Dashboard</a>, select the
+        desired device, click on settings and copy the Device ID and the Device Secret.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/a2bece694cf5c003f3ba.js"></script>
+
+      <p>
+        Lelylan uses MQTT, a publish subscribe protocol for the Internet of Things. To make it
+        work you need to set two topics: one to receive messages from Lelylan (<code>inTopic</code>)
+        and one to send messages to Lelylan (<code>outTopic</code>). Every topic is unique and
+        it's identified by the device id.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/54fca52c1510d25dac5c.js"></script>
+
+      <p>
+      Arduino is identified by an MQTT Client ID, a random string not longer than 23 bytes.
+      Choose it without any constraint.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/b8894ef50608f8d7a172.js"></script>
+
+
+      <h3>JSON Payloads</h3>
+
+      <p>
+        To communicate with Lelylan we need to send the messages setting the status property
+        to on or off. In this tutorial this is done by defining two fixed JSON structures: one
+        to turn on the light and one to turn it off.
+      </p>
+
+      <div class="notice">
+        <p>
+        To properly generete and parse JSON you can use the
+        <a href="https://github.com/interactive-matter/aJson">aJSON library</a>.
+        We tried too, but had some problems with the memory management.
+        If you make it work let us know on <a href="http://twitter.com/lelylan">Twitter</a>.
+        </p>
+      </div>
+
+      <script src="https://gist.github.com/andreareginato/6c10cc105b948e4e247f.js"></script>
+
+      <p>
+        When receiving a message from Lelylan you get an array of properties, where each property is
+        identified from its ID. For a <a href="http://lelylan.github.io/types-dashboard-ng/#/types/518be107ef539711af000001/">Basic Light</a>
+        the id <code>518be5a700045e1521000001</code> represents the status of a basic light.
+      </p>
+
+      <div class="notice">
+        <p>
+        If you want to know the property IDs of most common types or if you want to create your
+        own types, check out the <a href="lelylan.github.io/types-dashboard-ng/">Types Dashboard</a>.
+        If you want to deeply understand how types work check out the
+        <a href="http://dev.lelylan.com/types">Types API</a>.
+        </p>
+      </div>
+
+      <h3>MQTT Signatures</h3>
+
+      <p>
+        To open the communication between Lelylan and Arduino you need to initialize the
+        MQTT client connecting to the MQTT server. To make the initialization work you need
+        the MQTT server address, the MQTT server port, a callback function called every
+        time a message is received from Lelylan and the ethernet client.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/9b2ca9b08c2aedd8b94a.js"></script>
+
+      <h3>Led and Button Pins</h3>
+
+      <p>
+        Those are the pins used to connect the led and the button. If you have followed the
+        <a href="#hardware-setup">Fritzing diagram</a> you don't need to change anything.
+        If you use different pins, remember to change these values.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/e09ba401cbf39fd933f5.js"></script>
+
+      <h3>Led and Button Logics</h3>
+
+      <p>
+        Here we define all needed variables to make the button correctly work. If you are new to
+        push buttons check out the <a href="http://www.arduino.cc/en/Tutorial/Switch">Arduino tutorial</a>.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/97c3f138c25a1fa8bc58.js"></script>
+
+      <h3>Arduino Setup</h3>
+
+      <p>
+        During the Arduino setup Arduino connects to Lelylan MQTT server and set the
+        pin mode for the led and the button pins. Before, it connects to the Internet
+        using DHCP.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/c0342a394e552321b133.js"></script>
+
+      <h3>Arduino Loop</h3>
+
+      <p>
+      We use of a pushbutton as a switch: each time you press the button the led is
+      turned on or off. It also debounces the input, without which pressing the button
+      once would appear to the code as multiple presses. Once the led state changes,
+      Arduino publishes a message to Lelylan about the updates.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/26452424c12019f45865.js"></script>
+
+      <h3>MQTT connection</h3>
+
+      <p>
+      During the connection phase the client needs to set the <code>deviceId</code>
+      as username and the <code>deviceSecret</code> as password. When the credentials
+      are missing or not valid, the connection is rejected.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/df4ab00320e3e9bcd4ab.js"></script>
+
+      <p>
+        To keep the connection alive after temporary loss of internet connection we
+        check if the client is connected. When not, Arduino reconnects to Lelylan. This
+        is why the <code>lelylanConnection</code> method is used in the loop function.
+      </p>
+
+      <h3>Publish Messages to Lelylan</h3>
+
+      <p>
+        To notify the execution of a request or to notify a light status update
+        Arduino needs to publish a message to the topic <code>devices/:id/set</code> with the list
+        all of updated properties.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/cef12ebedef4c4d5450d.js"></script>
+
+      <p>
+      Every published message is made up from a list of properties.
+      </p>
+
+      <table class="table table-stripped table-hover">
+        <tbody>
+          <tr>
+            <td class="parameter">
+              <span>properties</span>
+              <span class="info">optional</span>
+            </td>
+            <td>
+              Array of properties to send to Lelylan.
+            </td>
+          </tr>
+          <tr>
+            <td class="parameter nested">
+              <span>&raquo; property.id</span>
+              <span class="info">required</span>
+            </td>
+            <td>
+              Property ID.
+            </td>
+          </tr>
+          <tr>
+            <td class="parameter nested">
+              <span>&raquo; property.value</span>
+              <span class="info">required</span>
+            </td>
+            <td>
+              Desired property value.
+              <a href="/support#faq-value-expected-pending">Learn more about</a>.
+            </td>
+          </tr>
+              <tr>
+            <td class="parameter nested">
+              <span>&raquo; property.expected</span>
+              <span class="info">optional</span>
+            </td>
+            <td>
+              Expected property value.
+              <a href="/support#faq-value-expected-pending">Learn more about</a>.
+            </td>
+          </tr>
+              <tr>
+            <td class="parameter nested">
+              <span>&raquo; property.pending</span>
+              <span class="info">optional</span>
+            </td>
+            <td>
+              Property pending status.
+              <a href="/support#faq-value-expected-pending">Learn more about</a>.
+              <span class="info">Valid values: true, false.</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+<h3>Receive Messages from Lelylan</h3>
+
+<p>
+When a user updates a device property or executes a function using Lelylan
+(e.g from dashboard, mobile, etc.), a message is published to the topic
+<code>devices/:id/get</code>. The physical device (that subscribed to this
+channel during the connection phase) will receive all incoming messages through
+the <code>callback</code> function (defined during the MQTT client initialization).
+</p>
+
+<p>
+To correctly apply a command to our light we need to check the value for the status
+property, turning it on or off. Once the led state is updated a confirmation message
+needs to be published to Lelylan telling it that the new properties has been
+successfully updated in the physical world.
+</p>
+
+<div class="code-block">
+<pre class="prettyprint"><xmp>void callback(char* topic, byte* payload, unsigned int length) {
+  // copu the payload content into a char*
+  char* json;
+  json = (char*) malloc(length + 1);
+  memcpy(json, payload, length);
+  json[length] = '\0';
+
+  // update the physical status and confirm the executed update
+  if (String(payloadOn) == String(json)) {
+    Serial.println("[LELYLAN] Led turned on");
+    lelylanPublish("on");
+    state = HIGH;
+  } else {
+    Serial.println("[LELYLAN] Led turned off");
+    lelylanPublish("off");
+    state = LOW;
+  }
+
+  digitalWrite(outPin, state);
+  free(json);
+}</xmp></pre>
+</div>
+
+<p>
+Every received message is made up from a list of properties each of them containing
+the property ID and the property value to change.
+</p>
+
+<table class="table table-stripped table-hover">
+  <tbody>
+    <tr>
+      <td class="parameter">
+        <span>properties</span>
+      </td>
+      <td>
+        Array of properties to send to Lelylan.
+      </td>
+    </tr>
+    <tr>
+      <td class="parameter nested">
+        <span>&raquo; property.id</span>
+      </td>
+      <td>
+        Property ID.
+      </td>
+    </tr>
+    <tr>
+      <td class="parameter nested">
+        <span>&raquo; property.value</span>
+      </td>
+      <td>
+        New property value.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+      <h1 id="thanks">Thanks</h1>
+
+      <p>
+      <a href="mailto:touch@lelylan.com" target="_blank">Mail</a> or
+      <a href="http://twitter.com/lelylan" target="_blank">Tweet</a>
+      us for any idea that can improve the project.
+      </p>
+
+      <p>
+      This project was created and released as open-source thanks to <a href="http://lelylan.com" target="_blank">Lelylan</a>
+      and all people contributing with their code, ideas and passion.
+      </p>
+
+    </div>
+    </section>
+  </body>
+</html>
