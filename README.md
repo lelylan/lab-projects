@@ -1,3 +1,3 @@
 # Lelylan Lab Articles
 
-A collection of articles that makes it simple to get started with Lelylan
+A collection of articles related to Lelylan hardware and software integration
