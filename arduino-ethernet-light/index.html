@@ -190,7 +190,8 @@
       Once the (virtual) device is defined on Lelylan you need to make it communicate with
       Arduino. Copy the sketch below and change the following variables:
       <code>deviceId</code>, <code>deviceSecret</code>,
-      <code>outTopic</code>, <code>inTopic</code> and <code>clientId</code>.
+      <code>outTopic</code>, <code>inTopic</code> and <code>clientId</code>
+      (it will not take more than one minute).
       </p>
 
       <script src="https://gist.github.com/andreareginato/813149ea661ec3066790.js"></script>
@@ -207,7 +208,7 @@
       <p>
       Access <a href="http://lelylan.github.io/devices-dashboard-ng">Lelylan Dashboard</a>
       and control your connected light from mobile, tablet and desktop. If any problem occours,
-      let us know on <a href="http://twitter.com/lelylan">Twitter</a>.
+      let <a href="http://twitter.com/lelylan">@lelylan</a> know.
       </p>
 
       <a href="http://lelylan.github.io/devices-dashboard-ng">
@@ -250,8 +251,7 @@
       <script src="https://gist.github.com/andreareginato/54fca52c1510d25dac5c.js"></script>
 
       <p>
-      Finally, you need to set the MQTT client id, a random string not longer than 23 bytes
-      identifying your Arduino.
+      Finally, you need to set the MQTT client id, a random string not longer than 23 bytes.
       </p>
 
       <script src="https://gist.github.com/andreareginato/b8894ef50608f8d7a172.js"></script>
@@ -260,9 +260,9 @@
       <h3>JSON Payloads</h3>
 
       <p>
-        Every message exchanged with Lelylan is made up by a list of properties. Each of them
-        contains the property ID and the property value. For the type "basic light" the status
-        property ID is <code>518be5a700045e1521000001</code> and its accepted values are
+        Every message exchanged with Lelylan is made up by a list of properties where each of them
+        contains the property ID and the property value. For the type "basic light" we only have the
+        status property with ID <code>518be5a700045e1521000001</code> accepting the values
         <code>on</code> and <code>off</code>.
       </p>
 
@@ -280,7 +280,7 @@
       <div class="notice">
         <p>
         If you want to know the property IDs of most common types or if you want to create your
-        own types, check out the <a href="lelylan.github.io/types-dashboard-ng/">Types Dashboard</a>.
+        own types, check out the <a href="lelylan.github.io/types-dashboard-ng/">Types Dashboard</a>
         or check out the <a href="http://dev.lelylan.com/types">Types API</a>.
         </p>
       </div>
@@ -289,7 +289,7 @@
 
       <p>
         To open the communication with Lelylan you need to initialize the MQTT client
-        setting the MQTT server address, the MQTT server port, a callback function (called every
+        settings by defining the MQTT server address, the MQTT server port, a callback function (called every
         time a message is received from Lelylan) and the ethernet client.
       </p>
 
@@ -319,50 +319,48 @@
 
       <p>
         Here we define the setup function where Arduino connects to the Internet using DHCP.
-        When the connection is made, Arduino connects to the Lelylan MQTT server and set the
-        led and button pin mode.
+        When the connection is made, Arduino open the connection with the Lelylan MQTT server,
+        and set the led and button pin mode.
       </p>
 
       <script src="https://gist.github.com/andreareginato/c0342a394e552321b133.js"></script>
 
-      <h3>Arduino Loop</h3>
-
       <p>
-      Here we define the loop function where we use of a pushbutton as a switch. Each time
-      you press the button the led is turned on or off. To make it work we need to add a
-      debounce otherwise everytime you press the button a single press would be recognized
-      as multiple press.
-      </p>
-
-      <p>
-      Once the push button is pressed and the led status changes, we publish a message to
-      Lelylan with the updated led status.
-      </p>
-
-      <script src="https://gist.github.com/andreareginato/26452424c12019f45865.js"></script>
-
-      <h3>MQTT connection</h3>
-
-      <p>
-      During the connection phase the client needs to set the <code>deviceId</code>
+      During the MQTT connection phase the client set the <code>deviceId</code>
       as username and the <code>deviceSecret</code> as password. If the credentials
-      are missing or not valid, the connection is rejected.
+      are missing or not valid, the connection will be rejected.
       </p>
 
       <script src="https://gist.github.com/andreareginato/df4ab00320e3e9bcd4ab.js"></script>
 
       <p>
         To keep the connection alive after temporary loss of internet connection we
-        check if the client is connected. When not, Arduino reconnects to Lelylan. This
-        is why the <code>lelylanConnection</code> method is defined into the loop function.
+        check if the client is connected. When not, Arduino reconnects to Lelylan MQTT server.
+        This is why the <code>lelylanConnection</code> method is also defined into the loop
+        function (see below).
       </p>
+
+      <h3>Arduino Loop</h3>
+
+      <p>
+      Here we define the loop function where we use a pushbutton as a switch. Each time
+      you press the button the led is turned on or off. To make it work we need to add a
+      <a href="http://arduino.cc/en/Tutorial/Debounce">debounce</a>, otherwise everytime
+      you press the button a single press would be recognized as multiple press.
+      </p>
+
+      <p>
+      Once the push button is pressed (the led status changes) we publish a message to
+      Lelylan with the updated led status.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/26452424c12019f45865.js"></script>
 
       <h3>Publish Messages to Lelylan</h3>
 
       <p>
-        To let Lelylan when the led is turned on or off, you need to publish a message
-        to the MQTT out topic <code>devices/&lt;DEVICE-ID&gt;/set</code>
-        with the updated properties.
+        To let Lelylan know when the led is turned on or off, you need to publish a message
+        to the MQTT out topic with the updated properties.
       </p>
 
       <script src="https://gist.github.com/andreareginato/cef12ebedef4c4d5450d.js"></script>
@@ -370,17 +368,13 @@
       <h3>Receive Messages from Lelylan</h3>
 
       <p>
-      When a user updates a device property or executes a function using Lelylan Dashboard
-      a message is published to the topic <code>devices/&lt;DEVICE-ID&gt;/get</code> and it's
-      received from Arduino through the <code>callback</code> function.
-      </p>
-
-      <p>
-
-      To correctly apply this message Arduino needs to turn on or off the light. Once the led
-      state is updated, a confirmation message needs to be sent back to Lelylan telling it that
-      the physical changes has been successfully applied (otherwise the device will keep being
-      pending).
+      When a user updates a device property using Lelylan Dashboard a message is published to
+      the topic <code>devices/&lt;DEVICE-ID&gt;/get</code> (in topic) and it's received from
+      Arduino through the <code>callback</code> function.
+      We check it the received message turns on or off the light and once the led status is updated,
+      a confirmation message must to be sent back to Lelylan to confirm that the physical changes
+      were successfully applied (if not, the device will keep being
+      <a href="http://dev.lelylan.com/support#faq-value-expected-pending">pending</a>).
       </p>
 
       <script src="https://gist.github.com/andreareginato/123f9529c24b9de32fa9.js"></script>
@@ -392,6 +386,10 @@
     <div class="content">
 
       <h1 id="troubleshooting">Troubleshooting</h1>
+
+      <p>
+      If any problem occours check out the following points.
+      </p>
 
       <ul>
 
