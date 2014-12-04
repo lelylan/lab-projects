@@ -25,7 +25,8 @@ body {
 }
 
 a {
-  color: #000;
+  color: #000 !important;
+  text-decoration: underline !important;
 }
 
 section {
@@ -75,6 +76,10 @@ xmp {
 .content img.linked-image {
   margin-top: 1em;
   margin-bottom: 0px;
+}
+
+.github {
+  border: none !important;
 }
 
 @media (max-width: 800px) {
@@ -151,7 +156,7 @@ section:nth-child(2n) {
 #heading {
   -webkit-user-select: none;
   position: absolute;
-  top: 25%;
+  top: 17%;
   margin-top: -10px;
   text-align: center;
   width: 100%;
@@ -282,6 +287,14 @@ ul.task-list .task-list-item-checkbox {
 
   #logo {
     font-size: 25px;
+  }
+
+  #logo {
+    font-size: 25px;
+  }
+
+  .github {
+    height: 32px;
   }
 }
 
@@ -432,7 +445,6 @@ div.compact {
 }
 
 
-
 /* Switch personalization */
 
 .ly-switch {
@@ -445,3 +457,33 @@ div.compact {
   border: 5px solid #eee !important;
   border-radius: 5px;
 }
+
+
+/* project card */
+
+#heading .ly-project-list-item img, .content .ly-project-list-item img {
+  margin: 0;
+}
+
+.ly-project-item-card .ly-project-title {
+  margin-top: 0;
+}
+
+.ly-project-item-card .ly-project-description {
+  height: 135px;
+}
+
+.ly-project-item-card .ly-project-title a, .ly-project-item-card .ly-project-title a:hover, .ly-project-item-card .ly-project-title a:visited:hover,
+.ly-project-item-card .ly-project-link a, .ly-project-item-card .ly-project-link a span, .ly-project-item-card .ly-project-link a:hover {
+  color: #239cbb !important;
+  text-decoration: none !important;
+}
+
+.ly-project-item-card .ly-project-tags {
+  display: none;
+}
+
+#heading .ly-project img, .content .ly-project img {
+  border: none;
+}
+
