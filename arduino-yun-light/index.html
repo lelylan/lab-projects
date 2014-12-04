@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Create your first connected light using Arduino Ethernet</title>
+    <title>Create your first connected light using Arduino Yun</title>
     <link rel="stylesheet" href="../public/style.css">
     <link rel="stylesheet" href="../public/icons/css/slate.css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Italiana&amp;subset=latin">
@@ -29,7 +29,7 @@
     </div>
 
     <div id="heading">
-      <div id="logo">Create your first connected light<br> using Arduino Ethernet</div>
+      <div id="logo">Create your first connected light<br> using Arduino Yun</div>
       <div id="tagline">
         <p>
         Control and monitor a connected light from mobile, tablet and desktop in 15 minutes
@@ -46,9 +46,7 @@
       <h1 id="hardware">Hardware</h1>
 
       <p>
-        To follow this tutorial you need an Arduino Ethernet or an Arduino UNO with
-        an Ethernet shield. Follows the list of components you need to reach the
-        final result.
+      To complete this tutorial you need the following components.
       <p>
 
       <table class="table table-stripped table-hover">
@@ -62,9 +60,9 @@
         </thead>
         <tbody>
           <tr>
-            <td>Arduino Ethernet</td>
-            <td><a href="https://www.sparkfun.com/products/11229" target="_blank">Sparkfun</a></td>
-            <td>$59.95</td>
+            <td>Arduino Yun</td>
+            <td><a href="http://store.arduino.cc/index.php?main_page=product_info&cPath=11&products_id=313">Arduino Store</a></td>
+            <td>$64.60 + VAT</td>
             <td>1</td>
           </tr>
           <tr>
@@ -96,7 +94,7 @@
       <h1 id="software">Software</h1>
 
       <p>
-      To program your Arduino you need to install the
+      To program your Arduino Yun you need to install the
       <a href="http://arduino.cc/en/main/software">Arduino IDE</a>
       and the following libraries (if you do not know how to install a library checkout this
       <a href="http://arduino.cc/en/Guide/Libraries">tutorial</a>).
@@ -192,11 +190,11 @@
       Once the (virtual) device is defined on Lelylan you need to make it communicate with
       Arduino. Copy the sketch below and change the following variables:
       <code>deviceId</code>, <code>deviceSecret</code>,
-      <code>outTopic</code>, <code>inTopic</code> and <code>clientId</code>
-      (it will not take more than one minute).
+      <code>outTopic</code>, <code>inTopic</code> and <code>clientId</code>.
+      It will not take more than one minute.
       </p>
 
-      <script src="https://gist.github.com/andreareginato/813149ea661ec3066790.js"></script>
+      <script src="https://gist.github.com/andreareginato/247d012d4da4f23e52a6.js"></script>
 
     </div>
     </section>
