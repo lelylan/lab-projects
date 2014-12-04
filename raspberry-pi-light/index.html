@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create your first connected light using Raspberry Pi</title>
+    <link rel="stylesheet" href="../public/style.css">
+    <link rel="stylesheet" href="../public/icons/css/slate.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Italiana&amp;subset=latin">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  </head>
+  <body>
+
+    <section id="top">
+
+    <div id="menu">
+      <a id="toggle" href="#">
+        <i class="icon-menu"></i>
+      </a>
+      <ul>
+        <li><a href="#hardware">Hardware</a></li>
+        <li><a href="#software">Software</a></li>
+        <li><a href="#hardware-setup">Hardware setup</a></li>
+        <li><a href="#lelylan-setup">Lelylan setup</a></li>
+        <li><a href="#code">Code</a></li>
+        <li><a href="#done">You are done</a></li>
+        <li><a href="#code-explained">Code explained</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#thanks">Thanks</a></li>
+      </ul>
+    </div>
+
+    <div id="heading">
+      <div id="logo">Create your first connected light<br> using Raspberry Pi</div>
+      <div id="tagline">
+        <p>
+        Control and monitor a connected light from mobile, tablet and desktop in 15 minutes using Lelylan & MQTT
+        </p>
+      </div>
+      <div class="center">
+        <img src="images/header.jpg" class="bordered"></img>
+      <div>
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+      <h1 id="hardware">Hardware</h1>
+
+      <p>
+      For this tutorial you need a Raspberry Pi connected to the Internet, either via
+      ethernet (Model B) or via WiFi using a compatible WiFi USB dongle. To configure the network
+      access on your Raspberry Pi have a look at
+      <a href="http://www.instructables.com/id/Configuring-the-Raspberry-Pi-ethernet-port-for-rem/">this tutorial</a>.
+      <p>
+
+      <p>
+      To complete this tutorial you need the following components.
+      <p>
+
+      <table class="table table-stripped table-hover">
+        <thead>
+          <tr>
+            <th>Components</th>
+            <th>Buy</th>
+            <th>Price</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="http://www.raspberrypi.org">Raspberry Pi (Model B+)</a></td>
+            <td><a href="http://www.element14.com/community/community/raspberry-pi/raspberry-pi-bplus?ICID=rpimain-topban-BPlus">Farnell</a></td>
+            <td>$35.00</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Edimax EW-7811Un (optional)</td>
+            <td><a href="http://www.amazon.com/Edimax-EW-7811Un-Wireless-Adapter-Wizard/dp/B003MTTJOY">Amazon</a></td>
+            <td>$8.00</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Push button</td>
+            <td><a href="https://www.sparkfun.com/products/9590" target="_blank">Component packs</a></td>
+            <td>$0.35</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Led</td>
+            <td><a href="https://www.sparkfun.com/products/9590" target="_blank">Component packs</a></td>
+            <td>$0.35</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>10K Ohm resistor</td>
+            <td><a href="https://www.sparkfun.com/products/10969" target="_blank">Resistor kit</a></td>
+            <td>$0.25</td>
+            <td>1</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+      Total cost: ~ $36 (ethernet) or ~$44 (WiFi).
+      <p>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+      <h1 id="software">Software</h1>
+
+      <p>
+        To program your Raspberry Pi you need to install a compatible GNU/Linux distribution
+        from the <a href="http://www.raspberrypi.org/downloads">Raw Images</a> list section
+        (if new to this checkout <a href="http://elinux.org/RPi_Easy_SD_Card_Setup">this guide</a>) and the
+        following libraries.
+      </p>
+
+      <table class="table table-stripped">
+        <thead>
+          <tr>
+            <th style="width: 160px">Library</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="http://mosquitto.org/documentation/python/">python-mosquitto</a></td>
+            <td>
+              This library enables the communication between Lelylan and the Rasp
+              by creating a MQTT client in Python.<br>
+              <code>$ sudo apt-get install python-mosquitto</code>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+      <h1 id="hardware-setup">Hardware Setup</h1>
+
+      <p>
+      This schema represents the led, resistor and pushbutton setup. With this setup
+      each time you press the button, the LED is turned on and off.
+      </p>
+
+      <img src="images/components.png" class="bordered"></img>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="lelylan-setup">Lelylan Setup</h1>
+
+      <p>
+      Open <a href="http://lelylan.github.io/devices-dashboard-ng/">Lelylan Dashboard</a>
+      and create a new device by following 3 simple steps (if you are new to Lelylan, you can
+      <a href="http://people.lelylan.com/users/sign_up">sign up</a> for free).
+      </p>
+
+      <h3>1) Set a meaningful name (e.g. bedroom light).</h3>
+
+      <img src="../public/images/shared/step-1.png" class="bordered"></img>
+
+      <h3>2) Choose the device type. For this tutorial choose <em>Basic Light</em>.</h3>
+
+      <p>
+      What is a type? A type defines what a device is by defining its properties,
+      functions and statuses. For this tutorial you do not need to now more about.
+      </p>
+
+      <img src="../public/images/shared/step-2.png" class="bordered"></img>
+
+      <h3>3) Choose <em>"Connect with MQTT"</em> as connectivity option.</h3>
+
+      <p>
+      In this tutorial we'll use MQTT, a publish subscribe protocol for the Internet of Things.
+      </p>
+
+      <img src="../public/images/shared/step-3.png" class="bordered"></img>
+
+      <h3>4) Get the Device ID and Device Secret.</h3>
+      <p>
+        Once the device is created, click the settings link (placed under the device name)
+        and get the device ID and device secret. You'll need them in the next section.
+      </p>
+      <img src="../public/images/shared/step-4-a.png" class="bordered" style="margin-bottom:0"></img>
+      <img src="../public/images/shared/step-4.png" class="bordered" style="margin-top:0"></img>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="code">Code</h1>
+
+      <p>
+      Once the (virtual) device is defined on Lelylan you need to make it communicate with
+      the Raspberry Pi. Copy the Python sketch below and change <code>&lt;DEVICE-ID&gt;</code>,
+      <code>&lt;DEVICE-SECRET&gt;</code> and <code>&lt;CLIENT-ID&gt;</code> with your device credentials.
+      Save the sketch in a file named
+      <code>lelylan_light.py</code> and run it as super user:
+      <code>$ sudo python lelylan_light.py</code>.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/11c83a400734a07e16f6.js"></script>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="done">You are done</h1>
+
+      <p>
+      Access <a href="http://lelylan.github.io/devices-dashboard-ng">Lelylan Dashboard</a>
+      and control your connected light from mobile, tablet and desktop. If any problem occours,
+      let <a href="http://twitter.com/lelylan">@lelylan</a> know.
+      </p>
+
+      <a href="http://lelylan.github.io/devices-dashboard-ng">
+        <img src="../public/images/shared/step-5.png" class="bordered"></img>
+      </a>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="code-explained">Code Explained</h1>
+
+      <p>
+      To better understand how the Raspberry Pi sketch works, follows a brief description of what
+      most important sections do.
+      </p>
+
+
+      <h3>GPIO Setup</h3>
+
+      <p>
+        Set GPIO mode to <code>BOARD</code> and set pin mode for the led and the button pins.
+        This will import the necessary libraries in the GPIO namespace and set the pin numbering
+        to correspond to your breakout board.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/1760012817b047fca806.js"></script>
+
+
+      <h3>MQTT Callbacks</h3>
+
+      <p>
+      When a user updates a device status using Lelylan Dashboard a message is published to the
+      topic <code>devices/&lt;DEVICE-ID&gt;/get</code> (in topic) and it's received from the Raspberry PI through
+      the <code>on_message</code> function.
+      </p>
+
+      <p>
+      Every message exchanged with Lelylan is made up by a list of properties where each of them
+      contains the property ID and the property value. For the "basic light" type we only have the
+      light status property which has ID <code>518be5a700045e1521000001</code> and accepts the values
+      <code>on</code> and <code>off</code>.
+      </p>
+
+      <p>
+      What we do is to check the received message and parse the JSON to see if the status
+      property is <code>on</code> or <code>off</code>. Based on this value, the light is turned on
+      or off and a message is sent back to Lelylan to confirm that the physical changes
+      were successfully applied (if not, the device will keep being pending).
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/cc04344610dd0794871f.js"></script>
+
+
+      <h3>Device Credentials</h3>
+
+      <p>
+      To make the Raspberry PI communicate with Lelylan create a new MQTT client passing a MQTT
+      client ID as param, a random string not longer than 23 bytes used to identify your
+      Raspberry Pi.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/628f3e3d7317fb4e6300.js"></script>
+
+      <p>
+        The <code>device_id</code> and <code>device_secret</code> are used to authenticate
+        the physical object (Raspberri PI) with Lelylan. To get the device credentials open the
+        <a href="http://lelylan.github.io/devices-dashboard-ng">Dashboard</a>, select the
+        desired device, click on settings and copy the Device ID and the Device Secret.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/c5b675897664fa9aa678.js"></script>
+
+      <p>
+        Lelylan uses MQTT, a publish subscribe protocol for the Internet of Things. To make
+        Lelylan communicate with Arduino you need to set two topics: one receiving messages
+        from Lelylan (<code>in_topic</code>) and one sending messages to Lelylan
+        (<code>out_topic</code>). These topics are unique and identified by the device id.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/79af46be469ab3666e32.js"></script>
+
+
+      <h3>MQTT Connection</h3>
+
+      <p>
+        Set the Lelylan MQTT server credentials and the MQTT server IP where to connect. Once
+        the connection is completed, the MQTT client subscribes to the <code>in_topic</code>.
+        This way the <code>on_message</code> callback function is called every time a message
+        is received from Lelylan.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/d5abb8c1e239bf8cc937.js"></script>
+
+      <h3>Button logic</h3>
+
+      <p>
+        Here we define the loop function where we use a pushbutton as a switch. Each time
+        you press the button the led is turned on or off. To make it work we need to add a
+        debounce, otherwise everytime you press the button a single press would be recognized
+        as multiple press.
+      </p>
+
+      <p>
+        Once the push button is pressed (the led status changes) we publish a message to
+        Lelylan with the updates.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/a552b550db0672ae6b7b.js"></script>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+
+      <h1 id="troubleshooting">Troubleshooting</h1>
+
+      <p>
+      Everything should work just fine. If any problem occours
+      <a href="mailto:touch@lelylan.com" target="_blank">mail</a> or
+      <a href="http://twitter.com/lelylan" target="_blank">Tweet</a>
+      us.
+      </p>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+      <h1 id="thanks">Thanks</h1>
+
+      <p>
+      This article is brought to life from the following people.
+      <a href="mailto:touch@lelylan.com" target="_blank">Mail</a> or
+      <a href="http://twitter.com/lelylan" target="_blank">Tweet</a>
+      us for any idea that can improve the project.
+      </p>
+
+      <a href="https://twitter.com/bugduino"><img src="../public/people/bugduino.jpg" class="bordered people"></img></a>
+      <a href="https://twitter.com/johnnyaboh"><img src="../public/people/johnnyaboh.jpg" class="bordered people"></img></a>
+      <a href="https://twitter.com/bugant"><img src="../public/people/bugant.jpg" class="bordered people"></img></a>
+      <a href="https://twitter.com/andreareginato"><img src="../public/people/reggie.jpg" class="bordered people"></img></a>
+
+    </div>
+    </section>
+  </body>
+</html>
