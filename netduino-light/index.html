@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create your first connected light using Netduino</title>
+    <link rel="stylesheet" href="../public/style.css">
+    <link rel="stylesheet" href="../public/icons/css/slate.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Italiana&amp;subset=latin">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  </head>
+  <body>
+
+    <section id="top">
+
+    <div id="menu">
+      <a id="toggle" href="#">
+        <i class="icon-menu"></i>
+      </a>
+      <ul>
+        <li><a href="#hardware">Hardware</a></li>
+        <li><a href="#software">Software</a></li>
+        <li><a href="#hardware-setup">Hardware setup</a></li>
+        <li><a href="#lelylan-setup">Lelylan setup</a></li>
+        <li><a href="#code">Code</a></li>
+        <li><a href="#done">You are done</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#inspired">Get inspired</a></li>
+        <li><a href="#thanks">Thanks</a></li>
+      </ul>
+    </div>
+
+    <div id="heading">
+      <div id="logo">Create your first connected light<br> using Netduino</div>
+      <div id="tagline">
+        <p>
+        Control and monitor a connected light from mobile, tablet and desktop using Lelylan & MQTT.<br>
+        15 minutes | $61 in hardware | entry level
+        </p>
+      </div>
+      <div class="center">
+        <img src="images/header.png" class="bordered"></img>
+      <div>
+      <div>
+        <a href="https://github.com/lelylan/lab-projects/blob/gh-pages/netduino-light/index.html" target="_blank">
+          <img title="Edit on Github" src="../public/images/github/GitHub-Mark-64px.png" class="github"></img>
+        </a>
+      </div>
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+      <h1 id="hardware">Hardware</h1>
+
+      <p>
+      To complete this tutorial you need the following components.
+      <p>
+
+      <table class="table table-stripped table-hover">
+        <thead>
+          <tr>
+            <th>Components</th>
+            <th>Buy</th>
+            <th>Price</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Netduino Plus 2</td>
+            <td><a href="https://www.sparkfun.com/products/11608">Sparkfun</a></td>
+            <td>$59.95</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Push button</td>
+            <td><a href="https://www.sparkfun.com/products/9590" target="_blank">Component packs</a></td>
+            <td>$0.35</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Led</td>
+            <td><a href="https://www.sparkfun.com/products/9590" target="_blank">Component packs</a></td>
+            <td>$0.35</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>10K Ohm resistor</td>
+            <td><a href="https://www.sparkfun.com/products/10969" target="_blank">Resistor kit</a></td>
+            <td>$0.25</td>
+            <td>1</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+      <h1 id="software">Software</h1>
+
+      <p>
+      To program your Netduino you need to install
+      <a href="http://www.visualstudio.com/en-us/products/visual-studio-express-vs.aspx">Visual Studio</a>
+      (the free edition works fine), the
+      <a href="http://www.netduino.com/downloads/">.NET Micro Framework</a>
+      (it allows you to write code for the .NET Micro Framework runtime and it
+      also install diagnostics tools),
+      <a href="http://www.netduino.com/downloads/">Netduino SDK</a> (it includes projects
+      templates that make it easy to getstarted with Netduino, USB drivers for Netduino,
+      and other Netduino specific tools) and the following libraries.
+      </p>
+
+      <table class="table table-stripped">
+        <thead>
+          <tr>
+            <th style="width: 160px">Library</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="http://m2mqtt.wordpress.com/">M2MQTT</a></td>
+            <td>
+              M2Mqtt is a MQTT client available for all .Net platforms (.Net Framework,
+              .Net Compact Framework and .Net Micro Framework) and WinRT platforms (Windows
+              8.1 and Windows Phone 8.1) for Internet of Things and M2M communication.
+              By <a href="http://www.google.com/url?q=http%3A%2F%2Fwww.embedded101.com%2Fen-us%2Fhome.aspx&sa=D&sntz=1&usg=AFQjCNEdc080xCiD4l1Bq7UvjXQSdos1bg">Paolo Patierno</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+      At the end of all these steps in your Visual Studio IDE you'll find a new
+      "Netduino plus 2 Application". Use it to get started.
+      </p>
+
+      <img src="images/template.png" class="bordered"></img>
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+      <h1 id="hardware-setup">Hardware Setup</h1>
+
+      <p>
+      This schema represents the led, resistor and pushbutton setup. With this setup
+      each time you press the button, the LED is turned on and off.
+      </p>
+
+      TODO FRITZING
+      <!--<img src="images/components.png" class="bordered"></img>-->
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="lelylan-setup">Lelylan Setup</h1>
+
+      <p>
+      Open <a href="http://lelylan.github.io/devices-dashboard-ng/">Lelylan Dashboard</a>
+      and create a new device by following 3 simple steps (if you are new to Lelylan, you can
+      <a href="http://people.lelylan.com/users/sign_up">sign up</a> for free).
+      </p>
+
+      <h3>1) Set a meaningful name (e.g. bedroom light).</h3>
+
+      <img src="../public/images/shared/step-1.png" class="bordered"></img>
+
+      <h3>2) Choose the device type. For this tutorial choose <em>Basic Light</em>.</h3>
+
+      <p>
+      What is a type? A type defines what a device is by defining its properties,
+      functions and statuses. For this tutorial you do not need to now more about.
+      </p>
+
+      <img src="../public/images/shared/step-2.png" class="bordered"></img>
+
+      <h3>3) Choose <em>"Connect with MQTT"</em> as connectivity option.</h3>
+
+      <p>
+      In this tutorial we'll use MQTT, a publish subscribe protocol for the Internet of Things.
+      </p>
+
+      <img src="../public/images/shared/step-3.png" class="bordered"></img>
+
+      <h3>4) Get the Device ID and Device Secret.</h3>
+      <p>
+        Once the device is created, click the settings link (placed under the device name)
+        and get the device ID and device secret. You'll need them in the next section.
+      </p>
+      <img src="../public/images/shared/step-4-a.png" class="bordered" style="margin-bottom:0"></img>
+      <img src="../public/images/shared/step-4.png" class="bordered" style="margin-top:0"></img>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="code">Code</h1>
+
+      <p>
+      Once the (virtual) device is defined on Lelylan you need to make it communicate with
+      Netduino. <a href="https://github.com/Ace68/20140515-LelylanM2MQTTNetduino">Checkout</a>
+      the sample code on Github.
+      </p>
+
+      <a href="https://github.com/Ace68/20140515-LelylanM2MQTTNetduino">
+        <img src="../public/images/github/Octocat.jpg" width="128px;"></img>
+      </a>
+
+      <h3>Lelylan Core</h3>
+
+      <p>
+      The <a href="https://github.com/Ace68/20140515-LelylanM2MQTTNetduino/blob/master/LelylanNetduinoLight/Core/LelylanCore.cs">LelylanCore</a>
+      static class defines the device settings.
+      </p>
+
+      <p>
+        The <code>DeviceId</code> and <code>DeviceSecret</code> are used to authenticate
+        the physical object (Netduino) with Lelylan. To get the device credentials open the
+        <a href="http://lelylan.github.io/devices-dashboard-ng">Dashboard</a>, select the
+        desired device, click on settings and copy the Device ID and the Device Secret.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/bd980f21c568e8032f99.js"></script>
+
+      <p>
+        Lelylan uses MQTT, a publish subscribe protocol for the Internet of Things. To make
+        Lelylan communicate with Arduino you need to set two topics: one receiving messages
+        from Lelylan (<code>_inTopic</code>) and one sending messages to Lelylan
+        (<code>_outTopic</code>). These topics are unique and identified by the device id.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/03c7bfbe12450e0f9acb.js"></script>
+
+      <p>
+        Every message exchanged with Lelylan is made up by a list of properties where each of them
+        contains the property ID and the property value. For the type "basic light" we only have the
+        status property with ID <code>518be5a700045e1521000001</code> accepting the values
+        <code>on</code> and <code>off</code>.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/e8a3efc53398e0ff40a0.js"></script>
+
+      <p>
+      Be careful to payload, you have to build a JSON array with the status id of your device
+      (you can find the status id by clicking settings under your Device Name, the clicking on
+      the device type name in "Device details" section.
+      </p>
+
+      <p>
+      If you want to know the property IDs of most common types or if you want to create your
+      own types, check out the <a href="http://lelylan.github.io/types-dashboard-ng/">Types Dashboard</a>
+      or the <a href="http://dev.lelylan.com/types">Types API</a>.
+      </p>
+
+      <h3>Program Class</h3>
+
+      <p>
+      The <a href="https://github.com/Ace68/20140515-LelylanM2MQTTNetduino/blob/master/LelylanNetduinoLight/Program.cs">Program</a>
+      class is the entry point of your application, a static class to invoke your device logic (controller).
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/35cb0f0972c7b4784fde.js"></script>
+
+      <h3>Controller Class</h3>
+
+      <p>
+      In the <a href="https://github.com/Ace68/20140515-LelylanM2MQTTNetduino/blob/master/LelylanNetduinoLight/Controller.cs">Controller</a>
+      constructor of this class you need to define a unique identifier for your MQTT client
+      (random string, max 23 bytes). Once you have defined it you can create an instance of
+      your MQTT client.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/9a943d70390df6e16408.js"></script>
+
+      <p>
+      The <code>RunLightMonitor</code> public method starts the netduino application. After settting an
+      onboard led reference, the code runs into a loop. In this loop we set the connection with
+      Lelylan (LelylanConnection), read the led status and publish it on Lelylan when changing.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/a74b51631f13c42515c9.js"></script>
+
+      <p>
+      The <code></code> public method starts the netduino application. After set an
+      onboard led reference the code runs into a loop. In this loop we set the connection with
+      Lelylan (LelylanConnection), read the led status and publish it on Lelylan when changing.
+      </p>
+
+      <p>
+      To communicate with Lelylan Netduino needs to initialize the MQTT client connection
+      to the MQTT server. You have to do it before a connection being active. In <code>LelylanConnection</code>
+      method you can see the detailed code explanation.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/14d24a98d8dbaf59a6b6.js"></script>
+
+      <p>
+      The <code>MqttMsgPublishReceived</code> is the event that receives the requests coming from
+      Lelylan to apply them to the physical world.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/e4347b253b6cbe13eec0.js"></script>
+
+      <p>
+      More information about M2MQTT .NET client are available
+      <a href="http://m2mqtt.wordpress.com/using-mqttclient/">here</a>.
+      </p>
+
+
+      <h3>Deploy</h3>
+
+      <p>
+      Once you are done ready we can deploy the code into the Netduino board. Make sure that
+      the deployment properties are the same as the picture below and then
+      select Debug -> Start Debugging (or press [F5] button) to run and deploy your sketch
+      into your netduino board.
+      </p>
+
+      <img src="images/deploy.png" class="bordered"></img>
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="done">You are done</h1>
+
+      <p>
+      Access <a href="http://lelylan.github.io/devices-dashboard-ng">Lelylan Dashboard</a>
+      and control your connected light from mobile, tablet and desktop. If any problem occours,
+      let <a href="http://twitter.com/lelylan">@lelylan</a> know.
+      </p>
+
+      <a href="http://lelylan.github.io/devices-dashboard-ng">
+        <img src="../public/images/shared/step-5.png" class="bordered"></img>
+      </a>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+
+      <h1 id="troubleshooting">Troubleshooting</h1>
+
+      <p>
+      Everything should work just fine. If any problem occours
+      <a href="mailto:touch@lelylan.com" target="_blank">mail</a> or
+      <a href="http://twitter.com/lelylan" target="_blank">Tweet</a>
+      us.
+      </p>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+
+      <h1 id="inspired">Get inspired</h1>
+
+      <p>
+      Did you like this tutorial? You could be interested in the following ones.
+      </p>
+
+      <div ng-app="project-app">
+        <ly-project ly-project-id="5457a05d386166000e010000"></ly-project>
+        <ly-project ly-project-id="5457a193386166008d000000"></ly-project>
+        <link rel="stylesheet" href="http://lelylan.github.io/lab-directives-ng/styles/main.css">
+        <script src="http://lelylan.github.io/lab-directives-ng/scripts/vendor.js"></script>
+        <script src="http://lelylan.github.io/lab-directives-ng/scripts/scripts.js"></script>
+        <script>angular.module('project-app', ['lelylan-lab.directives.project']);</script>
+      </div>
+
+      <br style="clear:both"><br><br>
+
+      <p>
+      If you want to learn more check out the
+      <a href="http://dev.lelylan.com">Lelylan Dev Center</a> and
+      <a href="http://lelylan.github.io/lab-ng/#/">Lelylan Lab</a>.
+      </p>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+      <h1 id="thanks">Thanks</h1>
+
+      <p>
+      This article is brought to life from the following people.
+      <a href="mailto:touch@lelylan.com" target="_blank">Mail</a> or
+      <a href="http://twitter.com/lelylan" target="_blank">Tweet</a>
+      us for any idea that can improve the project.
+      </p>
+
+      <a href="https://twitter.com/bugduino"><img src="../public/people/bugduino.jpg" class="bordered people"></img></a>
+
+    </div>
+    </section>
+  </body>
+</html>
