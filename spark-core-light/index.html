@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Create your first connected light using Arduino Ethernet</title>
+    <title>Create your first connected light using Spark Core</title>
     <link rel="stylesheet" href="../public/style.css">
     <link rel="stylesheet" href="../public/icons/css/slate.css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Italiana&amp;subset=latin">
@@ -30,18 +30,18 @@
     </div>
 
     <div id="heading">
-      <div id="logo">Create your first connected light<br> using Arduino Ethernet</div>
+      <div id="logo">Create your first connected light<br> using Spark Core</div>
       <div id="tagline">
         <p>
-        Control and monitor a connected light from mobile, tablet and desktop using Lelylan & MQTT<br>
-        15 minutes | $60 in hardware | basic level
+        Control and monitor a connected light from mobile, tablet and desktop using Lelylan & MQTT.<br>
+        15 minutes | $40 in hardware | basic level
         </p>
       </div>
       <div class="center">
         <img src="images/header.jpg" class="bordered"></img>
       <div>
       <div>
-        <a href="https://github.com/lelylan/lab-projects/blob/gh-pages/arduino-ethernet-light/index.html" target="_blank">
+        <a href="https://github.com/lelylan/lab-projects/blob/gh-pages/spark-core-light/index.html" target="_blank">
           <img title="Edit on Github" src="../public/images/github/GitHub-Mark-64px.png" class="github"></img>
         </a>
       </div>
@@ -53,8 +53,7 @@
       <h1 id="hardware">Hardware</h1>
 
       <p>
-        For this tutorial you need an Arduino Ethernet or an Arduino UNO with
-        an Ethernet shield. To complete this tutorial you need the following components.
+      To complete this tutorial you need the following components.
       <p>
 
       <table class="table table-stripped table-hover">
@@ -68,9 +67,9 @@
         </thead>
         <tbody>
           <tr>
-            <td>Arduino Ethernet</td>
-            <td><a href="https://www.sparkfun.com/products/11229" target="_blank">Sparkfun</a></td>
-            <td>$59.95</td>
+            <td><a href="https://www.spark.io/">Sparcore</a></td>
+            <td><a href="https://www.spark.io/">Sparkcore Store</a></td>
+            <td>$39,00</td>
             <td>1</td>
           </tr>
           <tr>
@@ -102,10 +101,8 @@
       <h1 id="software">Software</h1>
 
       <p>
-      To program your Arduino you need to install the
-      <a href="http://arduino.cc/en/main/software">Arduino IDE</a>
-      and the following libraries (if you do not know how to install a library checkout this
-      <a href="http://arduino.cc/en/Guide/Libraries">tutorial</a>).
+      In order to connect Spark Core to the internet follow the official <a href="https://www.spark.io/start">Getting started guide</a>,
+      access to the <a href="https://www.spark.io/build">Sparkcore IDE</a> and add and the following libraries.
       </p>
 
       <table class="table table-stripped">
@@ -117,15 +114,23 @@
         </thead>
         <tbody>
           <tr>
-            <td><a href="https://github.com/andreareginato/pubsubclient">PubSubClient</a></td>
             <td>
-              This is a fork of the <a href="https://github.com/knolleary/pubsubclient">original</a>
-              PubSubClient setting the <a href="http://knolleary.net/client-for-mqtt/api/#configoptions">max packet size</a>
-              to 512 bytes (needed for Lelylan to work).
+              <a href="https://gist.github.com/andreareginato/06426cf6c8deef19a364#file-mqtt-h">mqtt.h</a><br>
+              <a href="https://gist.github.com/andreareginato/06426cf6c8deef19a364#file-mqtt-cpp">mqtt.cpp</a>
+            </td>
+            <td>
+              This is a fork of the <a href="https://community.spark.io/t/mqtt-library-and-sample/2111">Kitard</a>
+              MQTT library setting the max packet size
+              to 512 bytes (needed for Lelylan to work). Add the two files to your project using the Sparkcore IDE
+              (click the '+' button in the upper right corner).
             </td>
           </tr>
         </tbody>
       </table>
+
+      <p>
+      Be sure that files will not be imported twice and if you change filenames (mqtt.h and mqtt.cpp), remember to change import statement too.
+      </p>
 
     </div>
     </section>
@@ -139,7 +144,7 @@
       each time you press the button, the LED is turned on and off.
       </p>
 
-      <img src="images/components.png" class="bordered"></img>
+      <img src="images/components.png" class="bordered" style="padding:20px;"></img>
 
     </div>
     </section>
@@ -198,11 +203,11 @@
       Once the (virtual) device is defined on Lelylan you need to make it communicate with
       Arduino. Copy the sketch below and change the following variables:
       <code>deviceId</code>, <code>deviceSecret</code>,
-      <code>outTopic</code>, <code>inTopic</code> and <code>clientId</code>
-      (it will not take more than one minute).
+      <code>outTopic</code>, <code>inTopic</code> and <code>clientId</code>.
+      It will not take more than one minute.
       </p>
 
-      <script src="https://gist.github.com/andreareginato/813149ea661ec3066790.js"></script>
+      <script src="https://gist.github.com/andreareginato/a2dec0b6b0aca0d17497.js"></script>
 
     </div>
     </section>
@@ -311,7 +316,7 @@
         change anything. If you use different pins, remember to change these values.
       </p>
 
-      <script src="https://gist.github.com/andreareginato/e09ba401cbf39fd933f5.js"></script>
+      <script src="https://gist.github.com/andreareginato/535872225be3496d4bfe.js"></script>
 
       <h3>Led and Button Logics</h3>
 
@@ -323,15 +328,14 @@
 
       <script src="https://gist.github.com/andreareginato/97c3f138c25a1fa8bc58.js"></script>
 
-      <h3>Arduino Setup</h3>
+      <h3>Spark Core Setup</h3>
 
       <p>
-        Here we define the setup function where Arduino connects to the Internet using DHCP.
-        When the connection is made, Arduino open the connection with the Lelylan MQTT server,
+        Here the Spark Core opens the connection with the Lelylan MQTT server,
         and set the led and button pin mode.
       </p>
 
-      <script src="https://gist.github.com/andreareginato/c0342a394e552321b133.js"></script>
+      <script src="https://gist.github.com/andreareginato/e2c9615ffe37dfefae84.js"></script>
 
       <p>
       During the MQTT connection phase the client set the <code>deviceId</code>
@@ -343,12 +347,12 @@
 
       <p>
         To keep the connection alive after temporary loss of internet connection we
-        check if the client is connected. When not, Arduino reconnects to Lelylan MQTT server.
+        check if the client is connected. When not, the Spark Core reconnects to Lelylan MQTT server.
         This is why the <code>lelylanConnection</code> method is also defined into the loop
         function (see below).
       </p>
 
-      <h3>Arduino Loop</h3>
+      <h3>Spark Core Loop</h3>
 
       <p>
       Here we define the loop function where we use a pushbutton as a switch. Each time
@@ -378,7 +382,7 @@
       <p>
       When a user updates a device property using Lelylan Dashboard a message is published to
       the topic <code>devices/&lt;DEVICE-ID&gt;/get</code> (in topic) and it's received from
-      Arduino through the <code>callback</code> function.
+      Spark Core through the <code>callback</code> function.
       We check it the received message turns on or off the light and once the led status is updated,
       a confirmation message must to be sent back to Lelylan to confirm that the physical changes
       were successfully applied (if not, the device will keep being
@@ -396,7 +400,10 @@
       <h1 id="troubleshooting">Troubleshooting</h1>
 
       <p>
-      If any problem occours check out the following points.
+      If any problem occours check out the following points. If still not working
+      <a href="mailto:touch@lelylan.com" target="_blank">mail</a> or
+      <a href="http://twitter.com/lelylan" target="_blank">tweet</a> us.
+
       </p>
 
       <ul>
@@ -404,16 +411,8 @@
         <li>
         <em>Message Size</em> -
         Using Lelylan your messages are usually bigger than 128 bytes. For this reason we
-        <a href="https://github.com/andreareginato/pubsubclient">forked</a> the
-        original PubSubClient setting the <a href="http://knolleary.net/client-for-mqtt/api/#configoptions">max packet size</a>
+        <a href="#software">forked</a> the original PubSubClient setting the max packet size
         to 512 bytes.
-        </li>
-
-        <li>
-        <em>Memory Usage</em> -
-        Arduino doesn't have that much memory. Take care of it and free all variables you have used.
-        If not, your Arduino will restart to get back the needed memory. A nice library to check
-        the memory consumption out is <a href="http://playground.arduino.cc/Code/AvailableMemory">MemoryFree</a>.
         </li>
 
       </ul>
@@ -431,8 +430,8 @@
       </p>
 
       <div ng-app="project-app">
-        <ly-project ly-project-id="5457a193386166008d000000"></ly-project>
         <ly-project ly-project-id="547d9104316135000e000000"></ly-project>
+        <ly-project ly-project-id="5457a193386166008d000000"></ly-project>
         <link rel="stylesheet" href="http://lelylan.github.io/lab-directives-ng/styles/main.css">
         <script src="http://lelylan.github.io/lab-directives-ng/scripts/vendor.js"></script>
         <script src="http://lelylan.github.io/lab-directives-ng/scripts/scripts.js"></script>
