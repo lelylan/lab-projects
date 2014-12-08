@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Create your first connected light using Arduino Yun</title>
+    <title>Create your first connected light using EZControl</title>
     <link rel="stylesheet" href="../public/style.css">
     <link rel="stylesheet" href="../public/icons/css/slate.css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Italiana&amp;subset=latin">
@@ -30,18 +30,18 @@
     </div>
 
     <div id="heading">
-      <div id="logo">Create your first connected light<br> using Arduino Yun</div>
+      <div id="logo">Create your first connected light<br> using EZControl</div>
       <div id="tagline">
         <p>
         Control and monitor a connected light from mobile, tablet and desktop using Lelylan & MQTT.<br>
-        15 minutes | $80 in hardware | basic level
+        15 minutes | $46 in hardware | basic level
         </p>
       </div>
       <div class="center">
-        <img src="images/header.jpg" class="bordered"></img>
+        <img src="images/header.png" class="bordered"></img>
       <div>
       <div>
-        <a href="https://github.com/lelylan/lab-projects/blob/gh-pages/arduino-yun-light/index.html" target="_blank">
+        <a href="https://github.com/lelylan/lab-projects/blob/gh-pages/ezcontrol-light/index.html" target="_blank">
           <img title="Edit on Github" src="../public/images/github/GitHub-Mark-64px.png" class="github"></img>
         </a>
       </div>
@@ -67,9 +67,9 @@
         </thead>
         <tbody>
           <tr>
-            <td>Arduino Yun</td>
-            <td><a href="http://store.arduino.cc/index.php?main_page=product_info&cPath=11&products_id=313">Arduino Store</a></td>
-            <td>$64.60 + VAT</td>
+            <td>EZControl</td>
+            <td><a href="http://ezcontrol.it">EZControl.it</a></td>
+            <td>$45</td>
             <td>1</td>
           </tr>
           <tr>
@@ -101,7 +101,7 @@
       <h1 id="software">Software</h1>
 
       <p>
-      To program your Arduino Yun you need to install the
+      To program your EZControl you need to install the
       <a href="http://arduino.cc/en/main/software">Arduino IDE</a>
       and the following libraries (if you do not know how to install a library checkout this
       <a href="http://arduino.cc/en/Guide/Libraries">tutorial</a>).
@@ -116,10 +116,18 @@
         </thead>
         <tbody>
           <tr>
-            <td><a href="https://github.com/andreareginato/pubsubclient">PubSubClient</a></td>
+            <td><a href="https://github.com/adafruit/Adafruit_CC3000_Library">CC3000 WiFi</a></td>
             <td>
-              This is a fork of the <a href="https://github.com/knolleary/pubsubclient">original</a>
-              PubSubClient setting the <a href="http://knolleary.net/client-for-mqtt/api/#configoptions">max packet size</a>
+              This is a library for the Adafruit CC3000 WiFi Breakouts. Designed specifically to work with
+              the Adafruit CC3000 Breakout, it works perfectly with EZControl CC3000.
+            </td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/lelylan/pubsubclient/">PubSubClient</a></td>
+            <td>
+              This is a fork of the <a href="https://github.com/nathanchantrell/pubsubclient">original</a>
+              PubSubClient that works with the AdaFruit CC3000 breakout board (and EZControl CC3000),
+              setting the <a href="http://knolleary.net/client-for-mqtt/api/#configoptions">max packet size</a>
               to 512 bytes (needed for Lelylan to work).
             </td>
           </tr>
@@ -139,6 +147,11 @@
       </p>
 
       <img src="images/components.png" class="bordered"></img>
+
+      <p class="notice">
+      Do not warry if you see the Yun board (we are not messing out).
+      We use it simply because Fritzing doesn't offer the EZControl board.
+      </p>
 
     </div>
     </section>
@@ -194,14 +207,14 @@
       <h1 id="code">Code</h1>
 
       <p>
-      Once the (virtual) device is defined on Lelylan you need to make it communicate with
-      Arduino. Copy the sketch below and change the following variables:
-      <code>deviceId</code>, <code>deviceSecret</code>,
-      <code>outTopic</code>, <code>inTopic</code> and <code>clientId</code>.
+      Once the (virtual) device is defined on Lelylan you need to make it communicate with the
+      EZControl. Copy the sketch below and change the WiFi (<code>WLAN_SSID</code> and <code>WLAN_PASS</code>)
+      and device credentials (<code>deviceId</code>, <code>deviceSecret</code>,
+      <code>outTopic</code>, <code>inTopic</code> and <code>clientId</code>).
       It will not take more than one minute.
       </p>
 
-      <script src="https://gist.github.com/andreareginato/247d012d4da4f23e52a6.js"></script>
+      <script src="https://gist.github.com/andreareginato/bb93ff7b04763caa6a0e.js"></script>
 
     </div>
     </section>
@@ -232,7 +245,7 @@
       <h1 id="code-explained">Code Explained</h1>
 
       <p>
-      To better understand how the Arduino sketch works, follows a brief description of what
+      To better understand how the EZControl sketch works, follows a brief description of what
       most important sections do.
       </p>
 
@@ -241,7 +254,7 @@
 
       <p>
         The <code>deviceId</code> and <code>deviceSecret</code> are used to authenticate
-        the physical object (Arduino) with Lelylan. To get the device credentials open the
+        the physical object (EZControl) with Lelylan. To get the device credentials open the
         <a href="http://lelylan.github.io/devices-dashboard-ng">Dashboard</a>, select the
         desired device, click on settings and copy the Device ID and the Device Secret.
       </p>
@@ -250,7 +263,7 @@
 
       <p>
         Lelylan uses MQTT, a publish subscribe protocol for the Internet of Things. To make
-        Lelylan communicate with Arduino you need to set two topics: one receiving messages
+        Lelylan communicate with EZControl you need to set two topics: one receiving messages
         from Lelylan (<code>inTopic</code>) and one sending messages to Lelylan
         (<code>outTopic</code>). These topics are unique and identified by the device id.
       </p>
@@ -310,7 +323,7 @@
         change anything. If you use different pins, remember to change these values.
       </p>
 
-      <script src="https://gist.github.com/andreareginato/e09ba401cbf39fd933f5.js"></script>
+      <script src="https://gist.github.com/andreareginato/4257a4ddabc1044cf3cc.js"></script>
 
       <h3>Led and Button Logics</h3>
 
@@ -322,15 +335,20 @@
 
       <script src="https://gist.github.com/andreareginato/97c3f138c25a1fa8bc58.js"></script>
 
-      <h3>Arduino Setup</h3>
+      <h3>EZControl Setup</h3>
 
       <p>
-        Here we define the setup function where Arduino connects to the Internet using DHCP.
-        When the connection is made, Arduino open the connection with the Lelylan MQTT server,
+      Here we define the setup function where EZControl connects to the WiFi CC3000 module.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/c9d0091844c52dc6ad44.js"></script>
+
+      <p>
+        When the connection is made, EZControl opens the connection with the Lelylan MQTT server,
         and set the led and button pin mode.
       </p>
 
-      <script src="https://gist.github.com/andreareginato/c0342a394e552321b133.js"></script>
+      <script src="https://gist.github.com/andreareginato/3027513ec74b655ec727.js"></script>
 
       <p>
       During the MQTT connection phase the client set the <code>deviceId</code>
@@ -338,30 +356,28 @@
       are missing or not valid, the connection will be rejected.
       </p>
 
-      <script src="https://gist.github.com/andreareginato/df4ab00320e3e9bcd4ab.js"></script>
+      <script src="https://gist.github.com/andreareginato/a740939f2814c29473d8.js"></script>
 
       <p>
         To keep the connection alive after temporary loss of internet connection we
-        check if the client is connected. When not, Arduino reconnects to Lelylan MQTT server.
+        check if the client is connected. When not, EZControl reconnects to Lelylan MQTT server.
         This is why the <code>lelylanConnection</code> method is also defined into the loop
         function (see below).
       </p>
 
-      <h3>Arduino Loop</h3>
+      <h3>EZControl Loop</h3>
 
       <p>
       Here we define the loop function where we use a pushbutton as a switch. Each time
       you press the button the led is turned on or off. To make it work we need to add a
       <a href="http://arduino.cc/en/Tutorial/Debounce">debounce</a>, otherwise everytime
       you press the button a single press would be recognized as multiple press.
+      Once the push button is pressed (the led turns on or off) we publish a message to
+      Lelylan with the updated led status (this way the dashboard receives the physical
+      update).
       </p>
 
-      <p>
-      Once the push button is pressed (the led status changes) we publish a message to
-      Lelylan with the updated led status.
-      </p>
-
-      <script src="https://gist.github.com/andreareginato/26452424c12019f45865.js"></script>
+      <script src="https://gist.github.com/andreareginato/8cafb21b4dd56cb4c08e.js"></script>
 
       <h3>Publish Messages to Lelylan</h3>
 
@@ -377,7 +393,7 @@
       <p>
       When a user updates a device property using Lelylan Dashboard a message is published to
       the topic <code>devices/&lt;DEVICE-ID&gt;/get</code> (in topic) and it's received from
-      Arduino through the <code>callback</code> function.
+      EZControl through the <code>callback</code> function.
       We check it the received message turns on or off the light and once the led status is updated,
       a confirmation message must to be sent back to Lelylan to confirm that the physical changes
       were successfully applied (if not, the device will keep being
@@ -403,15 +419,15 @@
         <li>
         <em>Message Size</em> -
         Using Lelylan your messages are usually bigger than 128 bytes. For this reason we
-        <a href="https://github.com/andreareginato/pubsubclient">forked</a> the
+        <a href="https://github.com/lelylan/pubsubclient/">forked</a> the
         original PubSubClient setting the <a href="http://knolleary.net/client-for-mqtt/api/#configoptions">max packet size</a>
         to 512 bytes.
         </li>
 
         <li>
         <em>Memory Usage</em> -
-        Arduino doesn't have that much memory. Take care of it and free all variables you have used.
-        If not, your Arduino will restart to get back the needed memory. A nice library to check
+        EZControl doesn't have that much memory. Take care of it and free all variables you have used.
+        If not, your EZControl will restart to get back the needed memory. A nice library to check
         the memory consumption out is <a href="http://playground.arduino.cc/Code/AvailableMemory">MemoryFree</a>.
         </li>
 
@@ -430,7 +446,7 @@
       </p>
 
       <div ng-app="project-app">
-        <ly-project ly-project-id="5457a05d386166000e010000"></ly-project>
+        <ly-project ly-project-id="5457a193386166008d000000"></ly-project>
         <ly-project ly-project-id="547d9104316135000e000000"></ly-project>
         <link rel="stylesheet" href="http://lelylan.github.io/lab-directives-ng/styles/main.css">
         <script src="http://lelylan.github.io/lab-directives-ng/scripts/vendor.js"></script>
