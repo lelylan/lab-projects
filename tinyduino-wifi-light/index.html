@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create your first connected light using Tinyduino</title>
+    <link rel="stylesheet" href="../public/style.css">
+    <link rel="stylesheet" href="../public/icons/css/slate.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Italiana&amp;subset=latin">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  </head>
+  <body>
+
+    <section id="top">
+
+    <div id="menu">
+      <a id="toggle" href="#">
+        <i class="icon-menu"></i>
+      </a>
+      <ul>
+        <li><a href="#hardware">Hardware</a></li>
+        <li><a href="#software">Software</a></li>
+        <li><a href="#hardware-setup">Hardware setup</a></li>
+        <li><a href="#lelylan-setup">Lelylan setup</a></li>
+        <li><a href="#code">Code</a></li>
+        <li><a href="#done">You are done</a></li>
+        <li><a href="#code-explained">Code explained</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#inspired">Get inspired</a></li>
+        <li><a href="#thanks">Thanks</a></li>
+      </ul>
+    </div>
+
+    <div id="heading">
+      <div id="logo">Create your first connected light<br> using Tinyduino</div>
+      <div id="tagline">
+        <p>
+        Control and monitor a connected light from mobile, tablet and desktop using Lelylan & MQTT.<br>
+        15 minutes | $101 in hardware | basic level
+        </p>
+      </div>
+      <div class="center">
+        <img src="images/header.png" class="bordered"></img>
+      <div>
+      <div>
+        <a href="https://github.com/lelylan/lab-projects/blob/gh-pages/tinyduino-wifi-light/index.html" target="_blank">
+          <img title="Edit on Github" src="../public/images/github/GitHub-Mark-64px.png" class="github"></img>
+        </a>
+      </div>
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+      <h1 id="hardware">Hardware</h1>
+
+      <p>
+      To complete this tutorial you need the following components.
+      <p>
+
+      <table class="table table-stripped table-hover">
+        <thead>
+          <tr>
+            <th>Components</th>
+            <th>Buy</th>
+            <th>Price</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tinyduino starter kit</td>
+            <td><a href="https://tiny-circuits.com/tiny-duino-basic-kit-146.html">Tiny Circuits</a></td>
+            <td>$39.95</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Tiny Shield WiFi</td>
+            <td><a href="https://tiny-circuits.com/tiny-shield-wifi.html">Tiny Circuits</a></td>
+            <td>$59.95</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Push button</td>
+            <td><a href="https://www.sparkfun.com/products/9590" target="_blank">Component packs</a></td>
+            <td>$0.35</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Led</td>
+            <td><a href="https://www.sparkfun.com/products/9590" target="_blank">Component packs</a></td>
+            <td>$0.35</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>10K Ohm resistor</td>
+            <td><a href="https://www.sparkfun.com/products/10969" target="_blank">Resistor kit</a></td>
+            <td>$0.5</td>
+            <td>2</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+      <h1 id="software">Software</h1>
+
+      <p>
+      To program your Tinyduino you need to install the
+      <a href="http://arduino.cc/en/main/software">Tinyduino IDE</a>
+      and the following libraries (if you do not know how to install a library checkout this
+      <a href="http://arduino.cc/en/Guide/Libraries">tutorial</a>).
+      </p>
+
+      <table class="table table-stripped">
+        <thead>
+          <tr>
+            <th style="width: 160px">Library</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://github.com/adafruit/Adafruit_CC3000_Library">CC3000 WiFi</a></td>
+            <td>
+              This is a library for the Adafruit CC3000 WiFi Breakouts. Designed specifically to work with
+              the Adafruit CC3000 Breakout, it works perfectly with TinyDuino WiFi shield.
+            </td>
+          </tr>
+          <tr>
+            <td><a href="https://github.com/lelylan/pubsubclient/">PubSubClient</a></td>
+            <td>
+              This is a fork of the <a href="https://github.com/nathanchantrell/pubsubclient">original</a>
+              PubSubClient that works with the AdaFruit CC3000 breakout board (and TinyDuino WiFi shield),
+              setting the <a href="http://knolleary.net/client-for-mqtt/api/#configoptions">max packet size</a>
+              to 512 bytes (needed for Lelylan to work).
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+      <h1 id="hardware-setup">Hardware Setup</h1>
+
+      <p>
+      This schema represents the led, resistor and pushbutton setup. With this setup
+      each time you press the button, the LED is turned on and off.
+      </p>
+
+      <img src="images/components.png" class="bordered"></img>
+
+      <p class="notice">
+      Do not warry if you see the Yun board (we are not messing out).
+      We use it simply because Fritzing doesn't offer the tinyduino one.
+      </p>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="lelylan-setup">Lelylan Setup</h1>
+
+      <p>
+      Open <a href="http://lelylan.github.io/devices-dashboard-ng/">Lelylan Dashboard</a>
+      and create a new device by following 3 simple steps (if you are new to Lelylan, you can
+      <a href="http://people.lelylan.com/users/sign_up">sign up</a> for free).
+      </p>
+
+      <h3>1) Set a meaningful name (e.g. bedroom light).</h3>
+
+      <img src="../public/images/shared/step-1.png" class="bordered"></img>
+
+      <h3>2) Choose the device type. For this tutorial choose <em>Basic Light</em>.</h3>
+
+      <p>
+      What is a type? A type defines what a device is by defining its properties,
+      functions and statuses. For this tutorial you do not need to now more about.
+      </p>
+
+      <img src="../public/images/shared/step-2.png" class="bordered"></img>
+
+      <h3>3) Choose <em>"Connect with MQTT"</em> as connectivity option.</h3>
+
+      <p>
+      In this tutorial we'll use MQTT, a publish subscribe protocol for the Internet of Things.
+      </p>
+
+      <img src="../public/images/shared/step-3.png" class="bordered"></img>
+
+      <h3>4) Get the Device ID and Device Secret.</h3>
+      <p>
+        Once the device is created, click the settings link (placed under the device name)
+        and get the device ID and device secret. You'll need them in the next section.
+      </p>
+      <img src="../public/images/shared/step-4-a.png" class="bordered" style="margin-bottom:0"></img>
+      <img src="../public/images/shared/step-4.png" class="bordered" style="margin-top:0"></img>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="code">Code</h1>
+
+      <p>
+      Once the (virtual) device is defined on Lelylan you need to make it communicate with the
+      Tinyduino. Copy the sketch below and change the WiFi (<code>WLAN_SSID</code> and <code>WLAN_PASS</code>)
+      and device credentials (<code>deviceId</code>, <code>deviceSecret</code>,
+      <code>outTopic</code>, <code>inTopic</code> and <code>clientId</code>).
+      It will not take more than one minute.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/db87f7ec6f799824308a.js"></script>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="done">You are done</h1>
+
+      <p>
+      Access <a href="http://lelylan.github.io/devices-dashboard-ng">Lelylan Dashboard</a>
+      and control your connected light from mobile, tablet and desktop. If any problem occours,
+      let <a href="http://twitter.com/lelylan">@lelylan</a> know.
+      </p>
+
+      <a href="http://lelylan.github.io/devices-dashboard-ng">
+        <img src="../public/images/shared/step-5.png" class="bordered"></img>
+      </a>
+
+    </div>
+    </section>
+
+
+    <section>
+    <div class="content">
+
+      <h1 id="code-explained">Code Explained</h1>
+
+      <p>
+      To better understand how the Tinyduino sketch works, follows a brief description of what
+      most important sections do.
+      </p>
+
+
+      <h3>Device Settings</h3>
+
+      <p>
+        The <code>deviceId</code> and <code>deviceSecret</code> are used to authenticate
+        the physical object (Tinyduino) with Lelylan. To get the device credentials open the
+        <a href="http://lelylan.github.io/devices-dashboard-ng">Dashboard</a>, select the
+        desired device, click on settings and copy the Device ID and the Device Secret.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/a2bece694cf5c003f3ba.js"></script>
+
+      <p>
+        Lelylan uses MQTT, a publish subscribe protocol for the Internet of Things. To make
+        Lelylan communicate with Tinyduino you need to set two topics: one receiving messages
+        from Lelylan (<code>inTopic</code>) and one sending messages to Lelylan
+        (<code>outTopic</code>). These topics are unique and identified by the device id.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/54fca52c1510d25dac5c.js"></script>
+
+      <p>
+      Finally, you need to set the MQTT client id, a random string not longer than 23 bytes.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/b8894ef50608f8d7a172.js"></script>
+
+
+      <h3>JSON Payloads</h3>
+
+      <p>
+        Every message exchanged with Lelylan is made up by a list of properties where each of them
+        contains the property ID and the property value. For the type "basic light" we only have the
+        status property with ID <code>518be5a700045e1521000001</code> accepting the values
+        <code>on</code> and <code>off</code>.
+      </p>
+
+      <div class="notice">
+        <p>
+        To properly generete and parse JSON you can use the
+        <a href="https://github.com/interactive-matter/aJson">aJSON library</a>.
+        We tried too, but had some problems with the memory management.
+        If you make it work let <a href="http://twitter.com/lelylan">@lelylan</a> know.
+        </p>
+      </div>
+
+      <script src="https://gist.github.com/andreareginato/6c10cc105b948e4e247f.js"></script>
+
+      <div class="notice">
+        <p>
+        If you want to know the property IDs of most common types or if you want to create your
+        own types, check out the <a href="lelylan.github.io/types-dashboard-ng/">Types Dashboard</a>
+        or check out the <a href="http://dev.lelylan.com/types">Types API</a>.
+        </p>
+      </div>
+
+      <h3>MQTT Signatures</h3>
+
+      <p>
+        To open the communication with Lelylan you need to initialize the MQTT client
+        settings by defining the MQTT server address, the MQTT server port, a callback function (called every
+        time a message is received from Lelylan) and the ethernet client.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/9b2ca9b08c2aedd8b94a.js"></script>
+
+      <h3>Led and Button Pins</h3>
+
+      <p>
+        Here we define the pins used to connect the led and the button. If you have
+        followed the <a href="#hardware-setup">Fritzing diagram</a> you don't need to
+        change anything. If you use different pins, remember to change these values.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/4257a4ddabc1044cf3cc.js"></script>
+
+      <h3>Led and Button Logics</h3>
+
+      <p>
+        Here we define the variables you need to make the button work correctly. If you are
+        new to push buttons check out this
+        <a href="http://www.arduino.cc/en/Tutorial/Switch">switch tutorial</a>.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/97c3f138c25a1fa8bc58.js"></script>
+
+      <h3>Tinyduino Setup</h3>
+
+      <p>
+      Here we define the setup function where Tinyduino connects to the WiFi CC3000 module.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/c9d0091844c52dc6ad44.js"></script>
+
+      <p>
+        When the connection is made, Tinyduino opens the connection with the Lelylan MQTT server,
+        and set the led and button pin mode.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/3027513ec74b655ec727.js"></script>
+
+      <p>
+      During the MQTT connection phase the client set the <code>deviceId</code>
+      as username and the <code>deviceSecret</code> as password. If the credentials
+      are missing or not valid, the connection will be rejected.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/a740939f2814c29473d8.js"></script>
+
+      <p>
+        To keep the connection alive after temporary loss of internet connection we
+        check if the client is connected. When not, Tinyduino reconnects to Lelylan MQTT server.
+        This is why the <code>lelylanConnection</code> method is also defined into the loop
+        function (see below).
+      </p>
+
+      <h3>Tinyduino Loop</h3>
+
+      <p>
+      Here we define the loop function where we use a pushbutton as a switch. Each time
+      you press the button the led is turned on or off. To make it work we need to add a
+      <a href="http://arduino.cc/en/Tutorial/Debounce">debounce</a>, otherwise everytime
+      you press the button a single press would be recognized as multiple press.
+      Once the push button is pressed (the led turns on or off) we publish a message to
+      Lelylan with the updated led status (this way the dashboard receives the physical
+      update).
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/8cafb21b4dd56cb4c08e.js"></script>
+
+      <h3>Publish Messages to Lelylan</h3>
+
+      <p>
+        To let Lelylan know when the led is turned on or off, you need to publish a message
+        to the MQTT out topic with the updated properties.
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/cef12ebedef4c4d5450d.js"></script>
+
+      <h3>Receive Messages from Lelylan</h3>
+
+      <p>
+      When a user updates a device property using Lelylan Dashboard a message is published to
+      the topic <code>devices/&lt;DEVICE-ID&gt;/get</code> (in topic) and it's received from
+      Tinyduino through the <code>callback</code> function.
+      We check it the received message turns on or off the light and once the led status is updated,
+      a confirmation message must to be sent back to Lelylan to confirm that the physical changes
+      were successfully applied (if not, the device will keep being
+      <a href="http://dev.lelylan.com/support#faq-value-expected-pending">pending</a>).
+      </p>
+
+      <script src="https://gist.github.com/andreareginato/123f9529c24b9de32fa9.js"></script>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+
+      <h1 id="troubleshooting">Troubleshooting</h1>
+
+      <p>
+      If any problem occours check out the following points.
+      </p>
+
+      <ul>
+
+        <li>
+        <em>Message Size</em> -
+        Using Lelylan your messages are usually bigger than 128 bytes. For this reason we
+        <a href="https://github.com/lelylan/pubsubclient/">forked</a> the
+        original PubSubClient setting the <a href="http://knolleary.net/client-for-mqtt/api/#configoptions">max packet size</a>
+        to 512 bytes.
+        </li>
+
+        <li>
+        <em>Memory Usage</em> -
+        Tinyduino doesn't have that much memory. Take care of it and free all variables you have used.
+        If not, your Tinyduino will restart to get back the needed memory. A nice library to check
+        the memory consumption out is <a href="http://playground.arduino.cc/Code/AvailableMemory">MemoryFree</a>.
+        </li>
+
+      </ul>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+
+      <h1 id="inspired">Get inspired</h1>
+
+      <p>
+      Did you like this tutorial? You could be interested in the following ones.
+      </p>
+
+      <div ng-app="project-app">
+        <ly-project ly-project-id="5457a05d386166000e010000"></ly-project>
+        <ly-project ly-project-id="547d9104316135000e000000"></ly-project>
+        <link rel="stylesheet" href="http://lelylan.github.io/lab-directives-ng/styles/main.css">
+        <script src="http://lelylan.github.io/lab-directives-ng/scripts/vendor.js"></script>
+        <script src="http://lelylan.github.io/lab-directives-ng/scripts/scripts.js"></script>
+        <script>angular.module('project-app', ['lelylan-lab.directives.project']);</script>
+      </div>
+
+      <br style="clear:both"><br><br>
+
+      <p>
+      If you want to learn more check out the
+      <a href="http://dev.lelylan.com">Lelylan Dev Center</a> and
+      <a href="http://lelylan.github.io/lab-ng/#/">Lelylan Lab</a>.
+      </p>
+
+    </div>
+    </section>
+
+    <section>
+    <div class="content">
+      <h1 id="thanks">Thanks</h1>
+
+      <p>
+      This article is brought to life from the following people.
+      <a href="mailto:touch@lelylan.com" target="_blank">Mail</a> or
+      <a href="http://twitter.com/lelylan" target="_blank">Tweet</a>
+      us for any idea that can improve the project.
+      </p>
+
+      <a href="https://twitter.com/bugduino"><img src="../public/people/bugduino.jpg" class="bordered people"></img></a>
+
+    </div>
+    </section>
+  </body>
+</html>
