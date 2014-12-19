@@ -156,7 +156,7 @@ section:nth-child(2n) {
 #heading {
   -webkit-user-select: none;
   position: absolute;
-  top: 17%;
+  top: 12%;
   margin-top: -10px;
   text-align: center;
   width: 100%;
@@ -177,7 +177,7 @@ section:nth-child(2n) {
 
 #menu {
   position: fixed;
-  top: 35px;
+  top: 15px;
   right: 30px;
   z-index: 50;
 }
@@ -444,6 +444,28 @@ div.compact {
   font-weight: normal !important;
 }
 
+#share-buttons {
+  margin:10px;
+}
+
+#share-buttons img {
+  width: 40px;
+  padding: 5px;
+  border: 0;
+  box-shadow: 0;
+  display: inline;
+  margin: 0 .2em;
+}
+
+/* Lelylan Back */
+
+.lelylan-back {
+  margin:20px;
+}
+
+.lelylan-back img{
+  height: 30px;
+}
 
 /* Switch personalization */
 
