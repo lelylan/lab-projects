@@ -174,21 +174,22 @@
     </div>
     </section>
 
-  <!-- we need to have the correct fritzing
     <section>
     <div class="content">
       <h1 id="hardware-setup">Hardware Setup</h1>
 
       <p>
-      This schema represents the led, resistor and pushbutton setup. With this setup
-      each time you press the button, the relay makes the light turn on and off. 
+      This schema represents the relay connected to a light (represented by a relay), 
+      resistor and pushbutton setup. With this setup each time you press the button, 
+      the relay makes the light turn on and off. 
       </p>
 
       <img src="images/components.png" class="bordered"></img>
 
       <p class="notice">
-      Do not warry if you see the Yun board (we are not messing out).
-      We use it simply because Fritzing doesn't offer the EZControl board.
+      Do not warry if you see the Yun board, we use it simply because Fritzing doesn't offer the EZControl board.
+      To make the sketch work also remember to use the right pins. In the code below we used the pin 4 to control 
+      the botton and pin 7 to control the relay.
       </p>
 
     </div>
